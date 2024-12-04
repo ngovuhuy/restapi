@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.restapi.dto.ExpenseDTO;
 import com.example.restapi.entity.ExpenseEntity;
+import com.example.restapi.exceptions.ResourceNotFoundException;
 import com.example.restapi.repository.ExpenseRepository;
 import com.example.restapi.service.ExpenseService;
 
@@ -52,6 +53,15 @@ public class ExpenseServiceImpl implements ExpenseService {
 		// TODO Auto-generated method stub
 		return modelMapper.map(expenseEntity,ExpenseDTO.class);
 	
+	}
+
+
+	@Override
+	public ExpenseDTO getExpenseByExpenseId(String expenseId) {
+		ExpenseEntity optionalExpense =  expenseRepository.findByExpenseId(expenseId)
+				.orElseThrow(() -> new ResourceNotFoundException("Expense not found for the expenseId " +expenseId));
+		
+		return mapToExpenseDTO(optionalExpense); 
 	}
 
 }

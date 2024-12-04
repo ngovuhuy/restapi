@@ -8,6 +8,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.restapi.dto.ExpenseDTO;
@@ -49,7 +50,14 @@ public class ExpenseController {
 
 		return response;
 	}
-   
+	
+	@GetMapping("/expenses/{expenseId}")
+    public ExpenseResponse getExpenseById(@PathVariable String expenseId) {
+    	
+    	ExpenseDTO expenseDTO = expenseService.getExpenseByExpenseId(expenseId);
+    	return mapToExpenseResponse(expenseDTO);
+    	
+    }
 	/**
 	 * mapper method for converting expense dto object to expense expense response
 	 * @param expenseDTO

@@ -26,8 +26,8 @@ public class ExpenseEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	@Column(unique = true)
-	private String ExpenseId;
-	private String Name;
+	private String expenseId;
+	private String name;
 	private String note;
 	private String category;
 	private Date date;
@@ -46,8 +46,8 @@ public class ExpenseEntity {
 	    // Constructor có tham số (All-Args Constructor)
 	    public ExpenseEntity(Long id, String expenseId, String name, String note, String category, Date date, BigDecimal amount, Timestamp createdAt, Timestamp updatedAt) {
 	        this.id = id;
-	        this.ExpenseId = expenseId;
-	        this.Name = name;
+	        this.expenseId = expenseId;
+	        this.name = name;
 	        this.note = note;
 	        this.category = category;
 	        this.date = date;
@@ -66,19 +66,19 @@ public class ExpenseEntity {
 	    }
 
 	    public String getExpenseId() {
-	        return ExpenseId;
+	        return expenseId;
 	    }
 
 	    public void setExpenseId(String expenseId) {
-	        ExpenseId = expenseId;
+	        expenseId = expenseId;
 	    }
 
 	    public String getName() {
-	        return Name;
+	        return name;
 	    }
 
 	    public void setName(String name) {
-	        Name = name;
+	    	name = name;
 	    }
 
 	    public String getNote() {
