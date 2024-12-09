@@ -10,7 +10,7 @@ import org.springframework.web.context.request.WebRequest;
 
 import io.ErrorObject;
 import lombok.extern.slf4j.Slf4j;
-@Slf4j
+@Slf4j 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
