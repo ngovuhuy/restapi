@@ -1,5 +1,6 @@
 package com.example.restapi.service.impl;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
@@ -72,5 +73,19 @@ public class ExpenseServiceImpl implements ExpenseService {
 	private ExpenseEntity getExpenseEntity(String expenseId) {
 		return expenseRepository.findByExpenseId(expenseId)
 				.orElseThrow(() -> new ResourceNotFoundException("Expense Not found for the expense id"+ expenseId));
+	}
+
+
+	@Override
+	public ExpenseDTO saveExpenseDetails(ExpenseDTO expenseDTO) {
+		ExpenseEntity newExpenseEntity = mapToExpenseEntity(expenseDTO);
+		newExpenseEntity.setExpenseId(UUID.randomUUID().toString());
+		newExpenseEntity = expenseRepository.save(newExpenseEntity);
+		return mapToExpenseDTO(newExpenseEntity);
+	}
+
+
+	private ExpenseEntity mapToExpenseEntity(ExpenseDTO expenseDTO) {
+		return modelMapper.map(expenseDTO, ExpenseEntity.class);
 	}
 }

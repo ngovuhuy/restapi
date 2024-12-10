@@ -18,4 +18,5 @@ public interface ExpenseService {
 	List<ExpenseDTO> getAllExpense();
 	ExpenseDTO getExpenseByExpenseId(String expenseId);
 	void deleteExpenseByExpenseId(String expenseId);
+	ExpenseDTO saveExpenseDetails(ExpenseDTO expenseDTO);
 }
