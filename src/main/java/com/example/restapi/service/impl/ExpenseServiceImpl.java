@@ -50,11 +50,6 @@ public class ExpenseServiceImpl implements ExpenseService {
 	 * @param expenseEntity
 	 * @return expenseDTO
 	 */
-	private ExpenseDTO mapToExpenseDTO(ExpenseEntity expenseEntity) {
-		// TODO Auto-generated method stub
-		return modelMapper.map(expenseEntity,ExpenseDTO.class);
-	
-	}
 
 
 	@Override
@@ -83,9 +78,27 @@ public class ExpenseServiceImpl implements ExpenseService {
 		newExpenseEntity = expenseRepository.save(newExpenseEntity);
 		return mapToExpenseDTO(newExpenseEntity);
 	}
+	private ExpenseDTO mapToExpenseDTO(ExpenseEntity expenseEntity) {
+		// TODO Auto-generated method stub
+		return modelMapper.map(expenseEntity,ExpenseDTO.class);
+	
+	}
 
 
 	private ExpenseEntity mapToExpenseEntity(ExpenseDTO expenseDTO) {
 		return modelMapper.map(expenseDTO, ExpenseEntity.class);
+	}
+
+
+	@Override
+	public ExpenseDTO updateExpenseDetails(ExpenseDTO expenseDTO, String expenseId) {
+		ExpenseEntity existingExpense = getExpenseEntity(expenseId);
+		ExpenseEntity updatedExpenseEntity = mapToExpenseEntity(expenseDTO);
+		updatedExpenseEntity.setId(existingExpense.getId());
+		updatedExpenseEntity.setExpenseId(existingExpense.getExpenseId());
+		updatedExpenseEntity.setCreatedAt(existingExpense.getCreatedAt());
+		updatedExpenseEntity.setUpdatedAt(existingExpense.getUpdatedAt());
+		updatedExpenseEntity = expenseRepository.save(updatedExpenseEntity);
+		return mapToExpenseDTO(updatedExpenseEntity);
 	}
 }
