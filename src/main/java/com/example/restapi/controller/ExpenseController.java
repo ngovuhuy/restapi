@@ -1,7 +1,9 @@
 
 package com.example.restapi.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
@@ -58,7 +60,26 @@ public class ExpenseController {
 
 		return response;
 	}
-	
+	@GetMapping("/expensesday")
+	public Map<String, List<ExpenseResponse>> getExpensesGroupedByDate() {
+	    log.info("API GET /expenses/grouped-by-date called");
+
+	    // Gọi service để lấy danh sách tất cả chi tiêu
+	    List<ExpenseDTO> list = expenseService.getAllExpense();
+	    log.info("Printing the data from service{}", list);
+
+	    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+	    // Chuyển đổi DTO -> Response và nhóm theo ngày dạng String
+	    Map<String, List<ExpenseResponse>> groupedByDate = list.stream()
+	            .map(this::mapToExpenseResponse) // Chuyển từ ExpenseDTO sang ExpenseResponse
+	            .collect(Collectors.groupingBy(expenseResponse -> 
+	                dateFormat.format(expenseResponse.getDate()))); // Chuyển Date -> String
+
+
+	    return groupedByDate;
+	}
+
 	@GetMapping("/expenses/{expenseId}")
     public ExpenseResponse getExpenseById(@PathVariable String expenseId) {
     	
