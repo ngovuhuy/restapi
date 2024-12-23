@@ -3,6 +3,7 @@ package com.example.restapi.service.impl;
 import java.util.UUID;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.restapi.dto.ProfileDTO;
@@ -20,8 +21,10 @@ public class ProfileServiceImp implements ProfileService {
 	private final ProfileRepository profileRepository;
 	private final ModelMapper modelMapper;
 
+	private final PasswordEncoder encoder;
 	@Override
 	public ProfileDTO createProfile(ProfileDTO profileDTO) {
+	      profileDTO.setPassword(encoder.encode(profileDTO.getPassword()));
 	       ProfileEntity profileEntity =  mapToProfileEntity(profileDTO);
 	       profileEntity.setProfileId(UUID.randomUUID().toString());
 	       // call the repository method
