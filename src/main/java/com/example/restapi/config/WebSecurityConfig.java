@@ -3,6 +3,7 @@ package com.example.restapi.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -28,7 +29,7 @@ public class WebSecurityConfig {
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
 		return httpSecurity.csrf(csrf -> csrf.disable())
-		.authorizeHttpRequests(auth -> auth.requestMatchers("/login", "/register", "/expenses").permitAll().anyRequest().authenticated())
+		.authorizeHttpRequests(auth -> auth.requestMatchers("/login", "/register").permitAll().requestMatchers(HttpMethod.OPTIONS, "/**").permitAll().anyRequest().authenticated())
 		.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 		.addFilterBefore(authenticaitonJwtTokenFilter(),UsernamePasswordAuthenticationFilter.class)
 		.httpBasic(Customizer.withDefaults())
