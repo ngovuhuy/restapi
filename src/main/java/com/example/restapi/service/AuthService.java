@@ -9,18 +9,30 @@ import com.example.restapi.entity.ProfileEntity;
 import com.example.restapi.repository.ProfileRepository;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class AuthService {
 
-	private final ProfileRepository profileRepository;
-	
-	public ProfileEntity getLoggedInProfile() {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		final String email = authentication.getName();
-		System.out.println("Authentication: " + authentication);
-		System.out.println("Authentication Name: " + authentication.getName());
-		return profileRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("Profile not found for the email1 "+email));
-	}
+    private final ProfileRepository profileRepository;
+
+    public ProfileEntity getLoggedInProfile() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            throw new UsernameNotFoundException("No authentication found");
+        }
+
+        // Lấy email từ authentication, giống như trong loadUserByUsername
+        final String email = authentication.getName();
+        log.info("Inside getLoggedInProfile()::: Email: {}", email);
+
+        // Truy vấn ProfileEntity từ repository
+        ProfileEntity profile = profileRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("Profile not found for the email " + email));
+
+        log.info("Profile found: {}", profile);
+        return profile;
+    }
 }

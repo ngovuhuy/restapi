@@ -31,30 +31,31 @@ public class WebSecurityConfig {
 		return httpSecurity.csrf(csrf -> csrf.disable())
 		.authorizeHttpRequests(auth -> auth.requestMatchers("/login", "/register").permitAll().requestMatchers(HttpMethod.OPTIONS, "/**").permitAll().anyRequest().authenticated())
 		.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-		.addFilterBefore(authenticaitonJwtTokenFilter(),UsernamePasswordAuthenticationFilter.class)
+		.addFilterBefore(authenticationJwtTokenFilter(),UsernamePasswordAuthenticationFilter.class)
 		.httpBasic(Customizer.withDefaults())
 		.build();
 	}
 	
-	@Bean
-	public JwtRequestFilter authenticaitonJwtTokenFilter() {
-		return new JwtRequestFilter();
-	}
-	@Bean
-	public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-		return authenticationConfiguration.getAuthenticationManager();
-	}
-	
-	@Bean
-	public DaoAuthenticationProvider authenticationProvider() {
-		DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-		authProvider.setUserDetailsService(customUserDetailsService);
-		authProvider.setPasswordEncoder(passwordEncoder());
-		return authProvider;
-	}
-	
-	@Bean
-	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
+	 @Bean
+	    public JwtRequestFilter authenticationJwtTokenFilter() {
+	        return new JwtRequestFilter();
+	    }
+
+	    @Bean
+	    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+	        return authenticationConfiguration.getAuthenticationManager();
+	    }
+
+	    @Bean
+	    public DaoAuthenticationProvider authenticationProvider() {
+	        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+	        authProvider.setUserDetailsService(customUserDetailsService);
+	        authProvider.setPasswordEncoder(passwordEncoder());
+	        return authProvider;
+	    }
+
+	    @Bean
+	    public PasswordEncoder passwordEncoder() {
+	        return new BCryptPasswordEncoder();
+	    }
 }
