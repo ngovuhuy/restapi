@@ -102,7 +102,7 @@ public class ExpenseController {
  
 	}
 	@PutMapping("/expenses/{expenseId}")
-	public ExpenseResponse updateExpenseDetails(@RequestBody ExpenseRequest updateRequest, @PathVariable String expenseId){
+	public ExpenseResponse updateExpenseDetails(@Valid @RequestBody ExpenseRequest updateRequest, @PathVariable String expenseId){
 		ExpenseDTO updatedExpenseDTO = mapToExpenDTO(updateRequest);
 		updatedExpenseDTO = expenseService.updateExpenseDetails(updatedExpenseDTO, expenseId);
 		return mapToExpenseResponse(updatedExpenseDTO);
